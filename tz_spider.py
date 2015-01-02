@@ -6,8 +6,6 @@ import time
 import re
 import traceback
 import urllib2
-import BeautifulSoup
-import pprint
 from cookielib import Cookie
 
 
@@ -66,34 +64,45 @@ def handle_keyword(keyword, all_names):
         handle_page(page, all_names)
         
 
-time_page = urllib2.urlopen("http://open.baidu.com/special/time/").read()
-t = re.findall(r"window.baidu_time\((.*?)\);", time_page)[0]
-t = int(t)
-# if t > 1419821429000:
-if t > 1420080629000:
-    raise
+# time_page = urllib2.urlopen("http://open.baidu.com/special/time/").read()
+# t = re.findall(r"window.baidu_time\((.*?)\);", time_page)[0]
+# t = int(t)
+# # if t > 1419821429000:
+# if t > 1421117429000:
+#    raise
 
 keywords = raw_input(u"请输入要搜索的关键词(多个词间以逗号分隔):".encode("gbk"))
 keywords = keywords.strip().decode("gbk").encode("utf8")
-keywords = keywords.split(",")
-sesrch_str = "_".join(keywords).decode("utf8").encode("gbk")
-open(sesrch_str + ".txt", "a")
-origin_names = open(sesrch_str + ".txt").read().split("\n")
-all_names = []
-new_names = []
+if not keywords:
+    lines = open("boss.txt").readlines()
+else:
+    lines = [keywords]
 
-for keyword in keywords:
-    handle_keyword(keyword, all_names)
+for keywords in lines:
+    keywords = keywords.strip()
+    if not keywords:
+        continue
 
-print "--------------------------"
+    print "==========", keywords, "=========="
+    keywords = keywords.split(",")
+    sesrch_str = "_".join(keywords).decode("utf8").encode("gbk")
+    open(sesrch_str + ".txt", "a")
+    origin_names = open(sesrch_str + ".txt").read().split("\n")
+    all_names = []
+    new_names = []
 
-for name in all_names:
-    if name not in origin_names:
-        new_names.append(name)
-        print name.decode("utf8")
+    for keyword in keywords:
+        handle_keyword(keyword, all_names)
 
-open(sesrch_str + ".txt", "w").write("\n".join(all_names))
-open(sesrch_str + "_new.txt", "w").write("\n".join(new_names))
+    print "--------------------------"
+
+    for name in all_names:
+        if name not in origin_names:
+            new_names.append(name)
+            print name.decode("utf8")
+
+    open(sesrch_str + ".txt", "w").write("\n".join(all_names))
+    open(sesrch_str + "_new.txt", "w").write("\n".join(new_names))
 
 
 print u"完成!请按回车键退出..."
