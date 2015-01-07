@@ -44,13 +44,14 @@ def handle_page(page, all_names):
 
 
 
-def handle_keyword(keyword, all_names):
+def handle_keyword(keyword, all_names, t):
     url = "http://www.tzgsj.gov.cn/baweb/show/shiju/queryByName.jsp"
     formData = urllib.urlencode({
                                 'spellcondition' : keyword,
                                 })
     page = get_page(url, formData)
     handle_page(page, all_names)
+    time.sleep(t)
 
     while True:
         rs = re.findall(r"上一页&nbsp;</a><a href='(.*?)'>下一页&nbsp;</a>", page)
@@ -62,6 +63,7 @@ def handle_keyword(keyword, all_names):
             break
         page = get_page(next_url)
         handle_page(page, all_names)
+        time.sleep(t)
         
 
 # time_page = urllib2.urlopen("http://open.baidu.com/special/time/").read()
@@ -70,6 +72,8 @@ def handle_keyword(keyword, all_names):
 # # if t > 1419821429000:
 # if t > 1421117429000:
 #    raise
+
+t = float(raw_input(u"请输入每次采集页面时间间隔(秒):".encode("gbk")))
 
 keywords = raw_input(u"请输入要搜索的关键词(多个词间以逗号分隔):".encode("gbk"))
 keywords = keywords.strip().decode("gbk").encode("utf8")
@@ -92,16 +96,15 @@ for keywords in lines:
     new_names = []
 
     for keyword in keywords:
-        handle_keyword(keyword, all_names)
+        handle_keyword(keyword, all_names, t)
 
     print "--------------------------"
 
     for name in all_names:
         if name not in origin_names:
             new_names.append(name)
+            open(sesrch_str + ".txt", "a").write("\n" + name)
             print name.decode("utf8")
-
-    open(sesrch_str + ".txt", "w").write("\n".join(all_names))
     open(sesrch_str + "_new.txt", "w").write("\n".join(new_names))
 
 
