@@ -73,7 +73,8 @@ def handle_keyword(keyword, all_names, t):
 # if t > 1421117429000:
 #    raise
 
-t = float(raw_input(u"请输入每次采集页面时间间隔(秒):".encode("gbk")))
+# t = float(raw_input(u"请输入每次采集页面时间间隔(秒):".encode("gbk")))
+t = 0
 
 keywords = raw_input(u"请输入要搜索的关键词(多个词间以逗号分隔):".encode("gbk"))
 keywords = keywords.strip().decode("gbk").encode("utf8")
