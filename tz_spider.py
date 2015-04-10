@@ -22,7 +22,7 @@ def get_page(url, data=None):
     while n < 5:
         n = n + 1
         try:
-            resp = opener.open(url, data)
+            resp = opener.open(url, data, timeout=10)
             page = resp.read()
             return page
         except:
