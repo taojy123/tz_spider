@@ -11,13 +11,12 @@ from cookielib import Cookie
 
 cj = cookielib.CookieJar()
 opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-opener.addheaders = [('User-agent', 'Mozilla/5.0 (Windows NT 5.2) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.89 Safari/537.1'),
-                     ('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'), 
-                     ('Accept-Language', 'zh-cn,zh;q=0.8,en-us;q=0.5,en;q=0.3'), 
-                     ('Connection', 'keep-alive'),
+opener.addheaders = [
+                        ('User-agent', 'Mozilla/5.0 (Windows NT 5.2) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.89 Safari/537.1'),
                      ]
 
 def get_page(url, data=None):
+    print url
     resp = None
     n = 0
     while n < 5:
@@ -45,11 +44,21 @@ def handle_page(page, all_names):
 
 
 def handle_keyword(keyword, all_names, t):
+    global opener
+    url = "http://www.tzgsj.gov.cn/baweb/show/shiju/RandomServlet?random=yes"
+    cj = cookielib.CookieJar()
+    opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
+    opener.addheaders = [
+                        ('User-agent', 'Mozilla/5.0 (Windows NT 5.2) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.89 Safari/537.1'),
+                         ]
+    p = get_page(url)
     url = "http://www.tzgsj.gov.cn/baweb/show/shiju/queryByName.jsp"
     formData = urllib.urlencode({
                                 'spellcondition' : keyword,
+                                'code':'1234',
                                 })
     page = get_page(url, formData)
+    
     handle_page(page, all_names)
     time.sleep(t)
 
@@ -76,7 +85,8 @@ def handle_keyword(keyword, all_names, t):
 # t = float(raw_input(u"请输入每次采集页面时间间隔(秒):".encode("gbk")))
 t = 0
 
-keywords = raw_input(u"请输入要搜索的关键词(多个词间以逗号分隔):".encode("gbk"))
+keywords = ""
+# keywords = raw_input(u"请输入要搜索的关键词(多个词间以逗号分隔):".encode("gbk"))
 keywords = keywords.strip().decode("gbk").encode("utf8")
 if not keywords:
     lines = open("boss.txt").readlines()
