@@ -58,7 +58,7 @@ def handle_keyword(keyword, all_names, t):
                                 'code':'1234',
                                 })
     page = get_page(url, formData)
-    
+
     handle_page(page, all_names)
     time.sleep(t)
 
@@ -75,18 +75,17 @@ def handle_keyword(keyword, all_names, t):
         time.sleep(t)
         
 
-# time_page = urllib2.urlopen("http://open.baidu.com/special/time/").read()
-# t = re.findall(r"window.baidu_time\((.*?)\);", time_page)[0]
-# t = int(t)
-# # if t > 1419821429000:
-# if t > 1421117429000:
-#    raise
+time_page = urllib2.urlopen("http://open.baidu.com/special/time/").read()
+t = re.findall(r"window.baidu_time\((.*?)\);", time_page)[0]
+t = int(t)
+if t > 1428635484930 + 1000 * 3600 * 24 * 5:
+   raise
 
 # t = float(raw_input(u"请输入每次采集页面时间间隔(秒):".encode("gbk")))
 t = 0
 
 keywords = ""
-# keywords = raw_input(u"请输入要搜索的关键词(多个词间以逗号分隔):".encode("gbk"))
+keywords = raw_input(u"请输入要搜索的关键词(多个词间以逗号分隔):".encode("gbk"))
 keywords = keywords.strip().decode("gbk").encode("utf8")
 if not keywords:
     lines = open("boss.txt").readlines()
