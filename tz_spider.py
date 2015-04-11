@@ -19,17 +19,17 @@ def get_page(url, data=None):
     print url
     resp = None
     n = 0
-    while n < 5:
+    while n < 50:
         n = n + 1
         try:
-            resp = opener.open(url, data, timeout=10)
+            resp = opener.open(url, data, timeout=100)
             page = resp.read()
             return page
         except:
             # traceback.print_exc()
             # print "Will try after 2 seconds ..."
-            print "..."
-            time.sleep(2.0)
+            print n
+            time.sleep(5.0)
             continue
         break
     return "Null"
@@ -49,7 +49,7 @@ def handle_keyword(keyword, all_names, t):
     cj = cookielib.CookieJar()
     opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
     opener.addheaders = [
-                        ('User-agent', 'Mozilla/5.0 (Windows NT 5.2) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.89 Safari/537.1'),
+                        ('Accept-Encoding', ''),
                          ]
     p = get_page(url)
     url = "http://www.tzgsj.gov.cn/baweb/show/shiju/queryByName.jsp"
