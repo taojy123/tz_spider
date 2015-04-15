@@ -75,11 +75,11 @@ def handle_keyword(keyword, all_names, t):
         time.sleep(t)
         
 
-time_page = urllib2.urlopen("http://open.baidu.com/special/time/").read()
-t = re.findall(r"window.baidu_time\((.*?)\);", time_page)[0]
-t = int(t)
-if t > 1428635484930 + 1000 * 3600 * 24 * 5:
-   raise
+# time_page = urllib2.urlopen("http://open.baidu.com/special/time/").read()
+# t = re.findall(r"window.baidu_time\((.*?)\);", time_page)[0]
+# t = int(t)
+# if t > 1428635484930 + 1000 * 3600 * 24 * 5:
+#    raise
 
 # t = float(raw_input(u"请输入每次采集页面时间间隔(秒):".encode("gbk")))
 t = 0
